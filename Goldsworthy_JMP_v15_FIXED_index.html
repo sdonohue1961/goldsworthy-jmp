@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Goldsworthy JMP - Offline Trial (No Automatic Email)</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;background:#f5f5f5;margin:0;color:#5f6368}
+.wrapper{max-width:760px;margin:0 auto;background:#fff;min-height:100vh;padding:24px 28px 40px}
+h1{color:#e85b00;font-size:34px;line-height:1.12;margin:14px 0 26px}
+.logo{font-weight:800;font-size:74px;color:#e85b00;letter-spacing:-4px;margin:10px 0 26px;text-align:center}
+.card{border:2px solid #d47832;border-radius:9px;padding:22px 28px;margin:18px 0}
+.notice{font-size:22px;line-height:1.45}
+label{display:block;font-size:22px;margin:22px 0 8px}
+.req{color:#b42318}
+input,select,textarea{width:100%;font-size:20px;padding:14px 16px;border:1.5px solid #8d939a;border-radius:8px;background:#fff;color:#333;box-sizing:border-box}
+textarea{min-height:120px;resize:vertical}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #aaa;font-size:21px}
+.toggle{position:relative;width:72px;height:38px}
+.toggle input{display:none}
+.slider{position:absolute;inset:0;background:#ccc;border-radius:30px;cursor:pointer}
+.slider:before{content:"";position:absolute;width:30px;height:30px;left:4px;top:4px;background:#fff;border-radius:50%;transition:.2s}
+.toggle input:checked + .slider{background:#43a047}
+.toggle input:checked + .slider:before{transform:translateX(34px)}
+.radio-group{display:flex;gap:32px;font-size:20px;margin:6px 0 4px}
+.radio-group label{font-size:20px;margin:0;display:flex;align-items:center;gap:8px}
+.radio-group input{width:auto}
+.section-title{font-weight:700;font-size:31px;line-height:1.25}
+.fatigue-box{background:#fff81a;border:1px solid #666;border-radius:8px;padding:24px 28px;margin-top:18px;font-size:20px;line-height:1.45}
+.fatigue-box h3{font-size:28px;text-align:center;margin:0 0 24px}
+.submit{width:100%;border:0;border-radius:7px;background:#e85b00;color:#fff;font-size:23px;padding:16px;margin-top:22px;cursor:pointer}
+@media (max-width:600px){.wrapper{padding:18px 16px 32px}h1{font-size:30px}.logo{font-size:64px}.card{padding:18px 20px}}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#e85b00">
+<link rel="apple-touch-icon" href="icon-192.png">
+</head>
+<body>
+<div class="wrapper"><div style="background:#fff3cd;color:#654600;border:2px solid #d6a600;padding:14px;border-radius:8px;font-weight:bold;font-size:18px">TRIAL ONLY — NOT FOR OPERATIONAL JOURNEY MANAGEMENT. Opens your email app with the completed report and both recipients. You must press Send in your email app. Use dummy information only.</div>
+<h1>Goldsworthy Journey Management<br>and Fatigue Assessment<br>Tool</h1>
+<div class="logo">BHP</div>
+<div class="card notice">
+You are still required to check in with the Paramedic on departure, every two hours and on arrival via text or call to the Goldsworthy Paramedic contact number 0437 751 866.
+<br><br>
+Emergency Breakdown – contact Paramedic/Supervisor – remain with vehicle until assistance arrives.
+</div>
+<div class="card">
+<label>Date <span class="req">*</span></label><input id="jmpDate" type="date" required>
+<label>Contact Number</label><input id="contactNumber" type="tel">
+<label>Driver/s Name <span class="req">*</span></label><textarea id="driverNames" required></textarea>
+<label>Passenger Names</label><textarea id="passengerNames"></textarea>
+
+<div class="toggle-row"><span>UHF installed/activated</span><label class="toggle"><input id="uhfActive" type="checkbox"><span class="slider"></span></label></div>
+<div class="toggle-row"><span>Prestart Completed <span class="req">*</span></span><label class="toggle"><input id="prestartCompleted" type="checkbox"><span class="slider"></span></label></div>
+
+<label>Satellite Phone Number</label><input id="satPhone" type="tel">
+<label>Vehicle Registration or Asset ID <span class="req">*</span></label><input id="vehicleId" type="text" required>
+<label>Departure Location <span class="req">*</span></label>
+<select id="departureLocation" required><option value="">Please select</option><option>Port Hedland</option><option>Goldsworthy</option></select>
+
+<label>Destination <span class="req">*</span></label>
+<select id="destination" required><option value="">Please select</option><option>Port Hedland</option><option>Goldsworthy</option></select>
+
+<label>Specify travel route</label><input id="travelRoute" type="text">
+<label>Time of departure <span class="req">*</span></label><select id="departureBand" required><option value="">Please select</option><option>1AM - 6AM</option><option>6AM - 6PM</option><option>6PM - 12AM</option></select>
+<label>Specify time of beginning journey <span class="req">*</span></label>
+<input id="journeyStartTime" type="text" inputmode="numeric" maxlength="4" placeholder="e.g. 0530" required>
+
+<label>Estimated Time of Arrival to Destination <span class="req">*</span></label><select id="arrivalBand" required><option value="">Please select</option><option>1AM - 6AM</option><option>6AM - 6PM</option><option>6PM - 12AM</option></select>
+
+<label>Have you messaged or called the Paramedic to confirm Journey Management? <span class="req">*</span></label>
+<div class="radio-group">
+<label><input type="radio" name="eso" value="Yes" required>Yes</label>
+<label><input type="radio" name="eso" value="No">No</label>
+</div>
+
+<label>Reason for Travel <span class="req">*</span></label>
+<select id="reasonForTravel" required><option value="">Please select</option><option>Commute to site</option><option>Other</option></select>
+
+<label>Site Contact</label><input id="siteContact" type="text">
+<div class="toggle-row"><span>Are you towing a trailer?</span><label class="toggle"><input id="towingTrailer" type="checkbox"><span class="slider"></span></label></div>
+
+<div class="card" style="margin:28px 0 18px;padding:18px 24px"><div class="section-title">Fatigue Assessment (all drivers to complete)</div></div>
+
+<label>How much Sleep have you had in the last 24 hours? <span class="req">*</span></label>
+<select id="sleepHours" required><option value="">Please select</option><option>Less than 6 hours</option><option>Greater than 6 hours</option></select>
+
+<label>Do you feel alert? <span class="req">*</span></label>
+<select id="alertLevel" required><option value="">Please select</option><option>1 - Fully Alert, fit for work</option><option>2 - A little tired, less than fresh</option><option>3 - Extremely tired, very difficult to concentrate</option></select>
+
+<label>Are you on any medications or other substances that could cause drowsiness or cause you to be unfit for work? <span class="req">*</span></label>
+<div class="radio-group">
+<label><input type="radio" name="meds" value="Yes" id="medsYes" required>Yes</label>
+<label><input type="radio" name="meds" value="No" id="medsNo">No</label>
+</div>
+<div id="medsWarning" style="display:none;background:#e60000;color:#fff;font-weight:700;font-size:20px;line-height:1.35;padding:8px;margin:14px 0;">
+Do not drive, please contact your line leader immediately.
+</div>
+
+<label>Do you have any stress, health problems or other personal problems that are significantly affecting your concentration and/or sleep? <span class="req">*</span></label>
+<div class="radio-group">
+<label><input type="radio" name="stress" value="Yes" id="stressYes" required>Yes</label>
+<label><input type="radio" name="stress" value="No" id="stressNo">No</label>
+</div>
+<div id="stressWarning" style="display:none;background:#fff81a;color:#444;font-weight:700;font-size:20px;line-height:1.35;padding:6px 0;margin:14px 0;">
+Please contact your line leader to discuss
+</div>
+
+<label>Other issues that may impact your Journey Management or Fatigue</label><textarea id="otherIssues"></textarea>
+
+<p style="font-size:20px;line-height:1.45"><strong>Please Note:</strong> Once JMP is submitted, you are still required to touch base with Paramedic via text or phone call throughout your travel period.</p>
+
+<div class="fatigue-box" id="fatigueAdvice">
+<h3 id="fatigueHeading">Please continue to monitor your fatigue. SAFE TRAVELS!</h3>
+<div id="fatigueAction" style="display:none"><u><strong>IMMEDIATE ACTION BEFORE YOUR JOURNEY:</strong></u> Please discuss possible reasons for fatigue with your line leader and put extra controls in place before commencing your drive.<br></div>
+Journey Management Checklist:
+<ul>
+<li>LV Prestart Inspection.</li>
+<li>Check Fuel Levels.</li>
+<li>Make sure you have contact information for: Paramedic, Camp Manager, SSE.</li>
+<li>Satellite phone and contact number.</li>
+<li>Stop Every 2 Hours and check in with the Paramedic.</li>
+<li>Fitted UHF Two Way Radio (Ch40 main roads &amp; Ch13 on site).</li>
+<li>Water Supply.</li>
+<li>Spare Tyre and Changing Equipment.</li>
+<li>Headlights on always.</li>
+<li>Damages to be reported to relevant authorities.</li>
+<li>Do not overtake unless POS comms given by person in front via radio.</li>
+<li>Travelling before 6am and after 6pm needs to be approved by the GM or delegate.</li>
+</ul>
+</div>
+
+<button class="submit" type="button" onclick="submitJMP()">PREPARE JMP EMAIL</button>
+<div id="emailFallback" style="display:none;margin:18px 0;padding:16px;border:2px solid #d47832;border-radius:8px;background:#fff" role="status"><strong>Email backup</strong><p>If your email app did not open, use the buttons below. Copy the report, then paste it into a new email addressed to the recipients shown.</p><p id="emailRecipients" style="overflow-wrap:anywhere"></p><a id="emailLink" href="#" style="display:block;padding:12px;margin:8px 0;background:#e85b00;color:white;text-align:center;border-radius:6px">OPEN EMAIL APP</a><button type="button" onclick="copyJMPReport()" style="padding:12px;width:100%;font-size:18px">COPY COMPLETED JMP</button><textarea id="emailReport" readonly style="box-sizing:border-box;width:100%;height:130px;margin-top:10px"></textarea><p id="copyStatus"></p></div>
+</div>
+</div>
+
+
+
+
+<script>
+const sleepHours = document.getElementById('sleepHours');
+const alertLevel = document.getElementById('alertLevel');
+const fatigueAdvice = document.getElementById('fatigueAdvice');
+const fatigueHeading = document.getElementById('fatigueHeading');
+const fatigueAction = document.getElementById('fatigueAction');
+const medsYes = document.getElementById('medsYes');
+const medsNo = document.getElementById('medsNo');
+const medsWarning = document.getElementById('medsWarning');
+const stressYes = document.getElementById('stressYes');
+const stressNo = document.getElementById('stressNo');
+const stressWarning = document.getElementById('stressWarning');
+
+function getRadioValue(name) {
+  const el = document.querySelector('input[name="' + name + '"]:checked');
+  return el ? el.value : '';
+}
+
+function refreshFatigue() {
+  const meds = getRadioValue('meds');
+  const stress = getRadioValue('stress');
+
+  if (medsWarning) {
+    medsWarning.style.display = meds === 'Yes' ? 'block' : 'none';
+  }
+  if (stressWarning) {
+    stressWarning.style.display = stress === 'Yes' ? 'block' : 'none';
+  }
+
+  const yellow =
+    sleepHours.value === 'Less than 6 hours' ||
+    alertLevel.value.startsWith('2 -') ||
+    alertLevel.value.startsWith('3 -') ||
+    meds === 'Yes' ||
+    stress === 'Yes';
+
+  if (yellow) {
+    fatigueAdvice.style.backgroundColor = '#fff81a';
+    fatigueHeading.innerHTML =
+      'Please contact your<br>line leader to discuss extra fatigue controls';
+    fatigueAction.style.display = 'block';
+  } else {
+    fatigueAdvice.style.backgroundColor = '#4dea3b';
+    fatigueHeading.textContent =
+      'Please continue to monitor your fatigue. SAFE TRAVELS!';
+    fatigueAction.style.display = 'none';
+  }
+}
+
+[sleepHours, alertLevel, medsYes, medsNo, stressYes, stressNo].forEach((el) => {
+  if (el) el.addEventListener('change', refreshFatigue);
+});
+
+refreshFatigue();
+</script>
+
+<script>
+const JMP_EMAILS = [
+  "goldsworthyparamedic@bhp.com",
+  "stephen.donohue1@bhp.com"
+];
+
+function val(id){
+  const el = document.getElementById(id);
+  return el ? (el.value || "") : "";
+}
+function checked(id){
+  const el = document.getElementById(id);
+  return el && el.checked ? "Yes" : "No";
+}
+function radio(name){
+  const el = document.querySelector('input[name="' + name + '"]:checked');
+  return el ? el.value : "";
+}
+function fatigueResult(){
+  const sleep = val("sleepHours");
+  const alertness = val("alertLevel");
+  const medication = radio("meds");
+  const stress = radio("stress");
+  if (!sleep || !alertness || !medication || !stress) {
+    return "INCOMPLETE - Fatigue assessment requires review";
+  }
+  const caution = sleep === "Less than 6 hours" ||
+    alertness.startsWith("2 -") || alertness.startsWith("3 -") ||
+    medication === "Yes" || stress === "Yes";
+  return caution
+    ? "YELLOW - Contact line leader / extra fatigue controls required"
+    : "GREEN - Continue to monitor fatigue / SAFE TRAVELS";
+}
+
+async function submitJMP(){
+  const required = document.querySelectorAll("[required]");
+  for (const el of required){
+    if ((el.type === "radio" && !document.querySelector('input[name="' + el.name + '"]:checked')) ||
+        (el.type !== "radio" && !el.value)) {
+      el.scrollIntoView({behavior:"smooth", block:"center"});
+      alert("Please complete all required fields before submitting.");
+      return;
+    }
+  }
+
+  const driver = val("driverNames") || "Driver";
+  const date = val("jmpDate") || "Date";
+  const result = fatigueResult();
+
+  function esc(s){
+    return String(s || "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;");
+  }
+
+  const completedForm = `<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Goldsworthy JMP - ${esc(driver)}</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;background:#f5f5f5;color:#444;margin:0;padding:20px}
+.form{max-width:760px;margin:auto;background:#fff;padding:28px;border-radius:10px}
+h1{color:#e85b00;margin-top:0}.section{border:1px solid #d47832;border-radius:8px;padding:18px 22px;margin:16px 0}.row{margin:10px 0}.label{font-weight:700}.result{font-weight:700;padding:16px;border-radius:8px;background:${result.startsWith("GREEN") ? "#4dea3b" : "#fff81a"}}
+</style></head><body><div class="form">
+<h1>Goldsworthy Journey Management and Fatigue Assessment Tool</h1>
+<div class="section">
+<div class="row"><span class="label">Date:</span> ${esc(val("jmpDate"))}</div>
+<div class="row"><span class="label">Contact Number:</span> ${esc(val("contactNumber"))}</div>
+<div class="row"><span class="label">Driver/s:</span> ${esc(val("driverNames"))}</div>
+<div class="row"><span class="label">Passengers:</span> ${esc(val("passengerNames"))}</div>
+<div class="row"><span class="label">UHF installed/activated:</span> ${esc(checked("uhfActive"))}</div>
+<div class="row"><span class="label">Prestart completed:</span> ${esc(checked("prestartCompleted"))}</div>
+<div class="row"><span class="label">Satellite Phone:</span> ${esc(val("satPhone"))}</div>
+<div class="row"><span class="label">Vehicle / Asset ID:</span> ${esc(val("vehicleId"))}</div>
+</div>
+<div class="section">
+<div class="row"><span class="label">Departure:</span> ${esc(val("departureLocation"))}</div>
+<div class="row"><span class="label">Destination:</span> ${esc(val("destination"))}</div>
+<div class="row"><span class="label">Travel route:</span> ${esc(val("travelRoute"))}</div>
+<div class="row"><span class="label">Departure band:</span> ${esc(val("departureBand"))}</div>
+<div class="row"><span class="label">Journey start time:</span> ${esc(val("journeyStartTime"))}</div>
+<div class="row"><span class="label">ETA band:</span> ${esc(val("arrivalBand"))}</div>
+<div class="row"><span class="label">Paramedic contacted:</span> ${esc(radio("eso"))}</div>
+<div class="row"><span class="label">Reason for travel:</span> ${esc(val("reasonForTravel"))}</div>
+<div class="row"><span class="label">Site contact:</span> ${esc(val("siteContact"))}</div>
+<div class="row"><span class="label">Towing trailer:</span> ${esc(checked("towingTrailer"))}</div>
+</div>
+<div class="section"><h2>Fatigue Assessment</h2>
+<div class="row"><span class="label">Sleep in last 24 hours:</span> ${esc(val("sleepHours"))}</div>
+<div class="row"><span class="label">Alertness:</span> ${esc(val("alertLevel"))}</div>
+<div class="row"><span class="label">Medication/substance drowsiness risk:</span> ${esc(radio("meds"))}</div>
+<div class="row"><span class="label">Stress/health/personal issues:</span> ${esc(radio("stress"))}</div>
+<div class="row"><span class="label">Other issues:</span> ${esc(val("otherIssues"))}</div>
+<div class="result">${esc(result)}</div></div>
+<p><strong>Goldsworthy Paramedic:</strong> 0437 751 866</p>
+</div>
+</body></html>`;
+
+  // Standard mailto links cannot attach files or send without confirmation.
+  // Put the completed report in the email body and pre-address both recipients.
+  const fields = [
+    ["Date", val("jmpDate")], ["Contact Number", val("contactNumber")],
+    ["Driver/s", val("driverNames")], ["Passengers", val("passengerNames")],
+    ["UHF installed/activated", checked("uhfActive")],
+    ["Prestart completed", checked("prestartCompleted")],
+    ["Satellite Phone", val("satPhone")], ["Vehicle / Asset ID", val("vehicleId")],
+    ["Departure", val("departureLocation")], ["Destination", val("destination")],
+    ["Travel route", val("travelRoute")], ["Departure band", val("departureBand")],
+    ["Journey start time", val("journeyStartTime")], ["ETA band", val("arrivalBand")],
+    ["Paramedic contacted", radio("eso")], ["Reason for travel", val("reasonForTravel")],
+    ["Site contact", val("siteContact")], ["Towing trailer", checked("towingTrailer")],
+    ["Sleep in last 24 hours", val("sleepHours")], ["Alertness", val("alertLevel")],
+    ["Medication/substance drowsiness risk", radio("meds")],
+    ["Stress/health/personal issues", radio("stress")],
+    ["Other issues", val("otherIssues")], ["Fatigue assessment", result]
+  ];
+  const report = "GOLDSWORTHY JOURNEY MANAGEMENT AND FATIGUE ASSESSMENT\n\n" +
+    fields.map(([label, value]) => label + ": " + (value || "Not provided")).join("\n") +
+    "\n\nGoldsworthy Paramedic: 0437 751 866\n" +
+    "Reminder: Check in with the paramedic on departure, every two hours and on arrival.";
+  const subject = `Goldsworthy JMP - ${driver} - ${date}`;
+  const url = "mailto:" + JMP_EMAILS.join(",") +
+    "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(report);
+  if (url.length > 7000) {
+    alert("Report is too long for reliable email-app handoff. Shorten free-text entries before continuing.");
+    return;
+  }
+  const fallback = document.getElementById("emailFallback");
+  document.getElementById("emailRecipients").textContent = "To: " + JMP_EMAILS.join(", ") + " | Subject: " + subject;
+  document.getElementById("emailLink").href = url;
+  document.getElementById("emailReport").value = report;
+  fallback.style.display = "block";
+  fallback.scrollIntoView({behavior:"smooth",block:"start"});
+  // This link can still be blocked by local-file browser restrictions.
+  document.getElementById("emailLink").click();
+}
+async function copyJMPReport(){
+  const area=document.getElementById("emailReport");
+  const status=document.getElementById("copyStatus");
+  try {
+    if(navigator.clipboard && window.isSecureContext){await navigator.clipboard.writeText(area.value);status.textContent="Report copied. Paste into your email app.";return;}
+  } catch(e) {}
+  area.focus();area.select();area.setSelectionRange(0,area.value.length);
+  try {if(document.execCommand("copy")){status.textContent="Report copied. Paste into your email app.";return;}} catch(e){}
+  status.textContent="Text selected. Long-press and choose Copy, then paste into your email app.";
+}
+</script>
+<script>if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js").catch(console.warn)); }</script>
+</body>
+</html>
